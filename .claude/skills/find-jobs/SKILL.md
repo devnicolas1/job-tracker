@@ -95,8 +95,8 @@ lowest token cost. Work silently; talk to the user only at the end (or if blocke
 ## Tailored résumé
 
 Follow the **Writing the edits** section of `.claude/skills/tailor-resume/SKILL.md` (read it once
-per run, before the first tailoring; `lang:` comes from `get_job_posting`). Send the result as `tailoredResume` in
-`save_job`.
+per run, before the first tailoring; `lang:` comes from `get_job_posting`). Send the result as
+`tailoredResume` in `save_job`.
 
 ## If something fails
 

@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "description": "Personal career database, resume vault and AI-curated job pipeline, operated by Claude Code over MCP.",
+  "license": "MIT",
+  "author": "Nicolas Freitas",
   "type": "module",
   "engines": {
     "node": ">=24"

@@ -1,9 +1,10 @@
 # Job Tracker
 
-A personal career database, résumé vault and AI-curated job pipeline. You keep a complete profile;
-an AI agent (Claude Code or Codex — no API key needed) searches LinkedIn and eight other job
-boards, scores every posting
-against your profile, tailors **your own résumé** to each strong match and files it all here.
+A personal career database, résumé vault and AI-curated job pipeline that runs on your own
+machine. You keep a complete profile; an AI coding agent (Claude Code or Codex, on your existing
+subscription — no API key needed) searches LinkedIn and eight other job boards, scores every
+posting against your profile, tailors **your own résumé** to each strong match and files it all
+here.
 
 - **Profile** — everything about your career: basics, job preferences, experience, education,
   certifications, projects, skills, languages, awards, publications, volunteering.
@@ -12,17 +13,29 @@ against your profile, tailors **your own résumé** to each strong match and fil
 - **Jobs** — opportunities ranked by fit, with strengths, gaps, a PDF résumé and a status pipeline
   (new → saved → applied → interviewing → offer / rejected).
 
+It is a single-user, local-only tool: there is no sign-in, so do not expose it on a network or
+deploy it publicly.
+
 ## Quick start
 
-Requires Node.js 24+.
+Requirements:
+
+- Node.js 24+ (`nvm use` reads `.nvmrc`). `better-sqlite3` is a native module; if `npm install`
+  has to compile it, you need a C/C++ toolchain (Xcode Command Line Tools, `build-essential`, or
+  the Visual Studio Build Tools).
+- [Claude Code](https://claude.com/claude-code) or [Codex](https://github.com/openai/codex) to
+  run the agent workflows. The web app works on its own, but finding jobs and tailoring résumés
+  need an agent.
 
 ```bash
+git clone <this repository> job-tracker
+cd job-tracker
 npm install
 npm run dev            # http://localhost:3000
 ```
 
-1. Fill in **Profile** (or upload a résumé on **Résumés** and ask Claude Code to
-   `/import-resume`). Set your **Job preferences**: they drive the search.
+1. Fill in **Profile**, or upload your résumé PDF on **Résumés** and run `/import-resume` in
+   Claude Code to fill it for you. Set your **Job preferences**: they drive the search.
 2. In this folder, start Claude Code and run:
 
    ```
@@ -50,7 +63,9 @@ command = "npm"
 args = ["run", "--silent", "--prefix", "/absolute/path/to/job-tracker", "mcp"]
 ```
 
-Codex reads `AGENTS.md`, which points it to the same workflow files.
+Codex reads `AGENTS.md`, which points it to the same workflow files. It has no `/find-jobs`
+command: ask it in plain words ("find 5 remote backend jobs", "tailor the résumé for job
+`Fn_fog-hkJc`").
 
 ## How it works
 
@@ -69,6 +84,7 @@ Codex reads `AGENTS.md`, which points it to the same workflow files.
   below call the same services, so the UI and the agent can never disagree about the rules.
 - **`src/app` + `src/features`** — the Next.js App Router UI. Routes stay thin; each feature owns
   its components and Server Actions. Forms are generated from declarative field descriptors.
+  Shared UI primitives live in `src/ui`, small helpers in `src/lib`.
 - **`src/core/resume-document`** — résumé → tailored résumé, without templates: reads the layout
   of your PDF, applies the agent's text edits and lays it out again (see below).
 - **`src/mcp`** — the Model Context Protocol server the agent talks to over stdio.
@@ -104,23 +120,26 @@ Tailored résumés are produced from your own PDF, never from a template:
    the content, then drawn with react-pdf using only the measured styles.
 
 The pipeline is verified by round-tripping: rendering a résumé **with no edits** reproduces every
-line of the original with the same breaks and spacing (within 0.2 pt), only without page breaks. Ligatures are disabled so the text
-layer reads "financial", not "fnancial", for applicant-tracking systems.
+line of the original with the same breaks and spacing (within 0.2 pt), only without page breaks.
+Ligatures are disabled so the text layer reads "financial", not "fnancial", for applicant-tracking
+systems.
 
 Limitations: images, photos, coloured boxes and multi-column layouts are not reproduced; scanned
 PDFs (no text layer) are rejected at upload.
 
 ## Scripts
 
-| Command               | What it does                                                    |
-| --------------------- | --------------------------------------------------------------- |
-| `npm run dev`         | Web app in development mode                                     |
-| `npm run build/start` | Production build and server                                     |
-| `npm run mcp`         | MCP server on stdio (normally started by the agent)             |
-| `npm run check`       | Typecheck, lint, format check and tests — run before committing |
-| `npm run db:generate` | Generate a migration after changing `src/core/db/schema.ts`     |
-| `npm run db:studio`   | Browse the database in Drizzle Studio                           |
-| `npm run demo`        | Seed and serve a fictional profile on port 3001                 |
+| Command                           | What it does                                                    |
+| --------------------------------- | --------------------------------------------------------------- |
+| `npm run dev`                     | Web app in development mode                                     |
+| `npm run build` / `npm start`     | Production build and server (still local-only)                  |
+| `npm run demo`                    | Seed and serve a fictional profile on port 3001                 |
+| `npm run mcp`                     | MCP server on stdio (normally started by the agent)             |
+| `npm run check`                   | Typecheck, lint, format check and tests — run before committing |
+| `npm test` / `npm run test:watch` | Tests only (Vitest)                                             |
+| `npm run format`                  | Format everything with Prettier                                 |
+| `npm run db:generate`             | Generate a migration after changing `src/core/db/schema.ts`     |
+| `npm run db:studio`               | Browse the database in Drizzle Studio                           |
 
 ## Job sources
 
@@ -150,10 +169,14 @@ Gupy was evaluated and left out: its API answers automated requests with a bot c
 ## Data and privacy
 
 Everything stays on your machine in `data/` (git-ignored): the SQLite database and your uploaded
-résumés. The only outbound requests are the agent's job searches on the sources above; public APIs
-and feeds are called with an honest user agent and cached. Scraping is against LinkedIn's terms of
-service; the tracker keeps volume low (a handful of
-throttled requests per run, for personal use), but use it with that in mind.
+résumés. The app itself makes outbound requests only for the agent's job searches on the sources
+above; public APIs and feeds are called with an honest user agent and cached. Keep in mind that
+your agent (Claude Code or Codex) reads your profile and résumé to do its work, so that data is
+sent to its model provider like anything else you show it.
+
+Scraping is against LinkedIn's terms of service. The tracker keeps volume low (a handful of
+throttled requests per run, for personal use), but use it with that in mind. This project is not
+affiliated with LinkedIn or any of the job boards it reads.
 
 Environment variables (all optional): `JOB_TRACKER_DATA_DIR` (default `data`),
 `JOB_TRACKER_ROOT` (default: current directory), `JOB_TRACKER_WEB_URL` (default
@@ -161,12 +184,21 @@ Environment variables (all optional): `JOB_TRACKER_DATA_DIR` (default `data`),
 
 ## Extending
 
+Read [`CLAUDE.md`](CLAUDE.md) first: it holds the architecture rules and conventions (for people
+and coding agents alike), and `npm run check` and `npm run build` must pass before a change is
+done.
+
 - **Another job board** — implement `JobSource` (`src/core/sources/types.ts`) next to
-  the others (feed or API boards can reuse `createCatalogSource`), register it in
-  `sources/registry.ts`, and add fixture-based parser tests.
+  the others (feed or API boards can reuse `createCatalogSource` from `sources/catalog.ts`),
+  register it in `sources/registry.ts`, and add parser tests against saved responses in
+  `__fixtures__/`.
 - **Another profile section** — add its zod schema to `profileSectionSchemas`
   (`src/core/profile/schemas.ts`) and a descriptor in `src/features/profile/descriptors.ts`.
   Storage, UI and MCP tools pick it up automatically.
 - **Another résumé language** — extend `RESUME_LANGUAGES` (`src/core/shared/schemas.ts`).
 - **Another résumé font** — `npm i @fontsource/<font>`; proprietary fonts map to a
   metric-compatible open one in `src/core/resume-document/fonts.ts` (Calibri → Carlito).
+
+## License
+
+[MIT](LICENSE) © Nicolas Freitas

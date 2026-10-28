@@ -11,7 +11,7 @@ import { createRemotiveSource } from './remotive/source';
 import type { JobSource } from './types';
 import { createWeWorkRemotelySource } from './weworkremotely/source';
 
-/** Every source the agent can search. Add new boards (Indeed, Gupy, Remotive…) here. */
+/** Every source the agent can search. Add new boards here. */
 const factories = {
   linkedin: createLinkedInSource,
   larajobs: createLaraJobsSource,
