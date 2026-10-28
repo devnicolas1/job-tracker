@@ -34,55 +34,47 @@ npm install
 npm run dev            # http://localhost:3000
 ```
 
-Then, in a second terminal **in the same folder**, start your agent. Nothing else to install or
-register: the MCP server and the skills ship with the repository for both agents.
+Then set up your agent once (see **Agent setup** below) and start it **in this folder**.
 
-| Agent           | Start it with | First run                                                          | Run a workflow                                        |
-| --------------- | ------------- | ------------------------------------------------------------------ | ----------------------------------------------------- |
-| **Claude Code** | `claude`      | Approve the `job-tracker` MCP server (from `.mcp.json`)            | `/find-jobs`, `/import-resume`, `/tailor-resume <id>` |
-| **Codex**       | `codex`       | Answer **yes** to "trust this folder" (loads `.codex/config.toml`) | `$find-jobs`, `$import-resume`, `$tailor-resume <id>` |
-
-Plain words work in both, too: "find 5 remote backend jobs in Portugal", "import my résumé into my
-profile", "tailor the résumé for job `Fn_fog-hkJc`".
-
-1. Fill in **Profile**, or upload your résumé PDF on **Résumés** and run `import-resume` to fill
-   it for you. Set your **Job preferences**: they drive the search.
-2. Run `find-jobs`, optionally with a target and focus: `/find-jobs 5 remote backend roles in
-Portugal` (Claude Code) or `$find-jobs 5 remote backend roles in Portugal` (Codex).
+1. Fill in **Profile**, or upload your résumé PDF on **Résumés** and ask the agent to import it
+   ("import my résumé into my profile"). Set your **Job preferences**: they drive the search.
+2. Ask it to find jobs, optionally with a target and focus: "find 5 remote backend jobs in
+   Portugal" (in Claude Code, also `/find-jobs 5 remote backend roles in Portugal`).
 3. Review the results on **Jobs**, download tailored résumés, and track your applications.
    Jobs saved without a résumé (or with an outdated one) have a **Copy tailoring prompt** button:
-   paste the copied prompt into either agent to generate that résumé.
+   paste the copied prompt into your agent to generate that résumé.
 
 Want to look around first? `npm run demo` serves a fictional profile on http://localhost:3001
 from a separate `.demo-data/` directory, leaving your data untouched.
 
 ### Agent setup
 
-What ships with the repository, and what each agent reads:
+The agent talks to the tracker through an MCP server, started with `node scripts/mcp.mjs` (works
+on macOS, Linux and Windows). The workflows are in `.claude/skills/`.
 
-| What               | Claude Code                       | Codex                                  |
-| ------------------ | --------------------------------- | -------------------------------------- |
-| Project rules      | `CLAUDE.md` (imports `AGENTS.md`) | `AGENTS.md`                            |
-| MCP server         | `.mcp.json`                       | `.codex/config.toml` (trusted folders) |
-| Skills (workflows) | `.claude/skills/`                 | `.agents/skills/` (a synced copy)      |
+**Claude Code** — nothing to do. Run `claude` in this folder and approve the `job-tracker` server
+when asked (it comes from `.mcp.json`); the workflows are available as `/find-jobs`,
+`/import-resume` and `/tailor-resume <job id>`. If the tools are missing, run `/mcp` to re-enable
+the server.
 
-Both start the server with `node scripts/mcp.mjs`, which works on macOS, Linux and Windows and
-from any directory.
+**Codex** — register the server once, with the absolute path to this folder:
 
-**Tools missing?** Check that the agent was started in this folder, then:
+```bash
+codex mcp add job-tracker -- node /absolute/path/to/job-tracker/scripts/mcp.mjs
+```
 
-- Claude Code: run `/mcp`; if `job-tracker` was rejected, re-enable it there (or run
-  `claude mcp reset-project-choices` and restart).
-- Codex: run `/mcp`. If `job-tracker` is not listed, the folder is not trusted (add
-  `[projects."/absolute/path/to/job-tracker"]` with `trust_level = "trusted"` to
-  `~/.codex/config.toml`), or register the server for every folder instead:
+Then run `codex` in this folder. It reads `AGENTS.md`, which points it to the workflow files, so
+ask in plain words: "find 5 remote backend jobs", "import my résumé into my profile", "tailor the
+résumé for job `Fn_fog-hkJc`". If a job search times out, raise the limit in
+`~/.codex/config.toml`:
 
-  ```bash
-  codex mcp add job-tracker -- node /absolute/path/to/job-tracker/scripts/mcp.mjs
-  ```
+```toml
+[mcp_servers.job-tracker]
+tool_timeout_sec = 300
+```
 
-- Either agent, any other MCP client (IDE extensions, Claude Desktop…): the server is a plain
-  stdio command, `node /absolute/path/to/job-tracker/scripts/mcp.mjs`.
+**Other MCP clients** (IDE extensions, Claude Desktop…): the server is a plain stdio command,
+`node /absolute/path/to/job-tracker/scripts/mcp.mjs`.
 
 ## How it works
 
@@ -106,7 +98,6 @@ from any directory.
   of your PDF, applies the agent's text edits and lays it out again (see below).
 - **`src/mcp`** — the Model Context Protocol server the agent talks to over stdio.
 - **`.claude/skills`** — the agent workflows: `find-jobs`, `tailor-resume` and `import-resume`
-  (mirrored to `.agents/skills` for Codex by `npm run skills:sync`).
 
 ### Key design decisions
 
@@ -147,18 +138,17 @@ PDFs (no text layer) are rejected at upload.
 
 ## Scripts
 
-| Command                           | What it does                                                                       |
-| --------------------------------- | ---------------------------------------------------------------------------------- |
-| `npm run dev`                     | Web app in development mode                                                        |
-| `npm run build` / `npm start`     | Production build and server (still local-only)                                     |
-| `npm run demo`                    | Seed and serve a fictional profile on port 3001                                    |
-| `npm run mcp`                     | MCP server on stdio (normally started by the agent)                                |
-| `npm run check`                   | Typecheck, lint, format check, skills sync check and tests — run before committing |
-| `npm run skills:sync`             | Copy `.claude/skills` to `.agents/skills` (Codex) after editing a skill            |
-| `npm test` / `npm run test:watch` | Tests only (Vitest)                                                                |
-| `npm run format`                  | Format everything with Prettier                                                    |
-| `npm run db:generate`             | Generate a migration after changing `src/core/db/schema.ts`                        |
-| `npm run db:studio`               | Browse the database in Drizzle Studio                                              |
+| Command                           | What it does                                                    |
+| --------------------------------- | --------------------------------------------------------------- |
+| `npm run dev`                     | Web app in development mode                                     |
+| `npm run build` / `npm start`     | Production build and server (still local-only)                  |
+| `npm run demo`                    | Seed and serve a fictional profile on port 3001                 |
+| `npm run mcp`                     | MCP server on stdio (normally started by the agent)             |
+| `npm run check`                   | Typecheck, lint, format check and tests — run before committing |
+| `npm test` / `npm run test:watch` | Tests only (Vitest)                                             |
+| `npm run format`                  | Format everything with Prettier                                 |
+| `npm run db:generate`             | Generate a migration after changing `src/core/db/schema.ts`     |
+| `npm run db:studio`               | Browse the database in Drizzle Studio                           |
 
 ## Job sources
 

@@ -3,22 +3,23 @@
 This file is read by Codex and other agents; `CLAUDE.md` imports it for Claude Code. Two kinds
 of work happen in this repository.
 
-**Operating the tracker** (finding jobs, editing the profile): use the `job-tracker` MCP tools
-and the skills `find-jobs`, `import-resume` and `tailor-resume`. Never edit `data/` directly.
-The profile is the only source of facts: never invent experience, dates, skills or metrics.
-If the `job-tracker` tools are missing, tell the user how to enable them (README, "Agent setup")
-instead of working around them.
+**Operating the tracker** (finding jobs, editing the profile): use the `job-tracker` MCP tools.
+Never edit `data/` directly. The profile is the only source of facts: never invent experience,
+dates, skills or metrics. If the `job-tracker` tools are missing, point the user to the README's
+"Agent setup" instead of working around them.
+
+The workflows live in `.claude/skills/`. Claude Code loads them as skills; other agents (Codex)
+read the file when the user asks for that task:
+
+- Find jobs (`find-jobs`): `.claude/skills/find-jobs/SKILL.md`.
+- Fill the profile from an uploaded résumé (`import-resume`): `.claude/skills/import-resume/SKILL.md`.
+- Tailor the résumé for one tracked job (`tailor-resume <job id>`):
+  `.claude/skills/tailor-resume/SKILL.md`.
+
+Skills must work in every agent: name MCP tools, not agent-specific tools (no "Read tool",
+"WebFetch"). The MCP server starts with `node scripts/mcp.mjs` on every OS, from any directory.
 
 **Changing the code**: read `README.md` (architecture and decisions) first.
-
-## Agent setup files
-
-- Skills are written once in `.claude/skills/` (Claude Code). `npm run skills:sync` copies them to
-  `.agents/skills/` (Codex); `npm run check` fails if the copies drift. Never edit the copies.
-- The MCP server starts with `node scripts/mcp.mjs` from any directory, on every OS. It is
-  registered in `.mcp.json` (Claude Code) and `.codex/config.toml` (Codex); keep them in sync.
-- Skills must work in both agents: name MCP tools, not agent-specific tools (no "Read tool",
-  "WebFetch"), and never assume slash commands exist.
 
 ## Architecture rules
 

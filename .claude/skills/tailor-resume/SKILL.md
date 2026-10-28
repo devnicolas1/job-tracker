@@ -1,6 +1,6 @@
 ---
 name: tailor-resume
-description: Write (or rewrite) the tailored résumé for one job already in the Job Tracker. Use when the user runs /tailor-resume <job id> (Claude Code) or $tailor-resume <job id> (Codex), or asks to tailor, generate or redo the résumé for a specific tracked job. Argument — the job id shown in the app, e.g. "Fn_fog-hkJc".
+description: Write (or rewrite) the tailored résumé for one job already in the Job Tracker. Use when the user runs /tailor-resume <job id>, or asks to tailor, generate or redo the résumé for a specific tracked job. Argument — the job id shown in the app, e.g. "Fn_fog-hkJc".
 ---
 
 # Tailor résumé for one job

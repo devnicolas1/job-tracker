@@ -1,8 +1,0 @@
-# Project-scoped Codex config: loaded when you trust this folder on Codex's first start.
-# Keep the server entry in sync with .mcp.json (Claude Code).
-[mcp_servers.job-tracker]
-command = "node"
-args = ["scripts/mcp.mjs"]
-# Job searches throttle requests (~1/s) and can take a while.
-startup_timeout_sec = 30
-tool_timeout_sec = 300
