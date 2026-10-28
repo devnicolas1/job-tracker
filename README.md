@@ -28,7 +28,7 @@ Requirements:
   need an agent.
 
 ```bash
-git clone <this repository> job-tracker
+git clone https://github.com/devnicolas1/job-tracker.git
 cd job-tracker
 npm install
 npm run dev            # http://localhost:3000
