@@ -83,7 +83,13 @@ lowest token cost. Work silently; talk to the user only at the end (or if blocke
    - **< 55** — add to a final `dismiss_jobs` batch.
    - Stop once the target count of ≥ 70 matches is saved.
 
-7. **Report** — a compact table (score, title, company, link from `save_job`), one line on what
+7. **Start the app** — only after everything is saved, check whether http://localhost:3000
+   responds. If it does not, start it from the repository root with `npm run dev` as a
+   background process (your agent's dev-server or preview tool if it has one, e.g. the
+   `job-tracker` entry in `.claude/launch.json`) and wait until the page responds, so the user
+   can review the results right away. Never stop an app that is already running.
+
+8. **Report** — a compact table (score, title, company, link from `save_job`), one line on what
    was dismissed and why, and the link http://localhost:3000/jobs. Nothing else.
 
 ## Assessment fields
