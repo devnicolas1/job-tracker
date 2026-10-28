@@ -169,8 +169,8 @@ export default async function JobPage({ params }: Props) {
                   {resumeStatus === 'base-missing'
                     ? 'The base résumé it was made from was removed.'
                     : 'Your base résumé was replaced after this was tailored, so its edits no longer line up.'}{' '}
-                  Copy the prompt and paste it into Claude Code, in this project, to tailor it
-                  again.
+                  Copy the prompt and paste it into Claude Code or Codex, in this project, to tailor
+                  it again.
                 </EmptyState>
               ) : (
                 <EmptyState
@@ -185,7 +185,7 @@ export default async function JobPage({ params }: Props) {
                   }
                 >
                   The agent writes one for strong matches. To get one for this job, copy the prompt
-                  and paste it into Claude Code, in this project.
+                  and paste it into Claude Code or Codex, in this project.
                 </EmptyState>
               )}
             </CardBody>

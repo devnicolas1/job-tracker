@@ -156,11 +156,16 @@ export default async function JobsPage({
         </ul>
       ) : activeTotal + counts.dismissed === 0 ? (
         <EmptyState icon={Sparkles} title="No jobs yet">
-          Fill in your profile and preferences, then open Claude Code in this project and run{' '}
+          Fill in your profile and preferences, then open Claude Code or Codex in this project and
+          run{' '}
           <code className="rounded bg-surface-muted px-1.5 py-0.5 font-mono text-xs">
             /find-jobs
+          </code>{' '}
+          (Codex:{' '}
+          <code className="rounded bg-surface-muted px-1.5 py-0.5 font-mono text-xs">
+            $find-jobs
           </code>
-          . Matches appear here with a fit score and a tailored résumé.
+          ). Matches appear here with a fit score and a tailored résumé.
         </EmptyState>
       ) : (
         <EmptyState icon={Search} title="No jobs match these filters" />

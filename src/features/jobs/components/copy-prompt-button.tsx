@@ -64,7 +64,9 @@ export function CopyPromptButton({
       }}
     >
       {state === 'copied' ? <Check aria-hidden /> : <ClipboardCopy aria-hidden />}
-      <span aria-live="polite">{state === 'copied' ? 'Copied — paste in Claude Code' : label}</span>
+      <span aria-live="polite">
+        {state === 'copied' ? 'Copied — paste it into your agent' : label}
+      </span>
     </Button>
   );
 }

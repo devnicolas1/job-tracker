@@ -16,7 +16,7 @@ lowest token cost. Work silently; talk to the user only at the end (or if blocke
   at once; pass `sources` only to narrow it.
 - Triage from the one-line search results. Open (`get_job_posting`) only postings that survive
   triage — at most **2× the target** count. Use `maxChars: 4000`.
-- Never open job pages in a browser or with WebFetch: the tools are far cheaper.
+- Never open job pages in a browser or with a web-fetch tool: the MCP tools are far cheaper.
 - Never echo postings or descriptions back. `save_job` fills in the posting server-side: send
   only `externalId`, your assessment and the tailored résumé.
 - Dismiss rejects in **one** batched `dismiss_jobs` call per phase, with reasons of ≤ 6 words.
@@ -94,9 +94,9 @@ lowest token cost. Work silently; talk to the user only at the end (or if blocke
 
 ## Tailored résumé
 
-Follow the **Writing the edits** section of `.claude/skills/tailor-resume/SKILL.md` (read it once
-per run, before the first tailoring; `lang:` comes from `get_job_posting`). Send the result as
-`tailoredResume` in `save_job`.
+Follow the **Writing the edits** section of the `tailor-resume` skill (`../tailor-resume/SKILL.md`
+from this skill's folder; read it once per run, before the first tailoring; `lang:` comes from
+`get_job_posting`). Send the result as `tailoredResume` in `save_job`.
 
 ## If something fails
 
