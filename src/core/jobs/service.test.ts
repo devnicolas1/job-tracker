@@ -49,6 +49,7 @@ describe('job service', () => {
 
     expect(jobs.list().map((job) => job.externalId)).toEqual(['b', 'a', 'c']);
     expect(jobs.list({ minScore: 70 }).map((job) => job.externalId)).toEqual(['b']);
+    expect(jobs.list({ sort: 'newest' }).map((job) => job.externalId)).toEqual(['c', 'b', 'a']);
     expect(jobs.list({ statuses: ['dismissed'] })[0]?.notes).toContain('Requires relocation');
     expect(jobs.findKnownExternalIds('linkedin', ['a', 'd', 'z'])).toEqual(new Set(['a', 'd']));
   });

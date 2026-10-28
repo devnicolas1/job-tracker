@@ -119,7 +119,7 @@ export function createJobService(
 
   return {
     list(filter: JobFilter = {}): JobSummary[] {
-      const { statuses, minScore, query, limit } = parseInput(jobFilterSchema, filter);
+      const { statuses, minScore, query, sort, limit } = parseInput(jobFilterSchema, filter);
       const conditions: (SQL | undefined)[] = [
         // Dismissed postings are bookkeeping for the agent; hide them unless asked for.
         statuses?.length ? inArray(jobs.status, statuses) : ne(jobs.status, 'dismissed'),
@@ -139,7 +139,12 @@ export function createJobService(
         .select(summaryColumns)
         .from(jobs)
         .where(and(...conditions))
-        .orderBy(sql`${jobs.matchScore} is null`, desc(jobs.matchScore), desc(jobs.createdAt))
+        .orderBy(
+          ...(sort === 'newest'
+            ? // rowid breaks ties between jobs saved in the same millisecond.
+              [desc(jobs.createdAt), sql`rowid desc`]
+            : [sql`${jobs.matchScore} is null`, desc(jobs.matchScore), desc(jobs.createdAt)]),
+        )
         .limit(limit ?? 200)
         .all()
         .map((row) => ({

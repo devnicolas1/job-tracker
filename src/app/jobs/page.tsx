@@ -3,9 +3,9 @@ import type { Metadata, Route } from 'next';
 import Link from 'next/link';
 
 import { getServices } from '@/core/container';
-import { jobStatusSchema, type JobStatus } from '@/core/jobs/schemas';
+import { jobStatusSchema, type JobStatus, type JobSummary } from '@/core/jobs/schemas';
 import { JobCard } from '@/features/jobs/components/job-card';
-import { STATUS_META, STATUS_TABS } from '@/features/jobs/presentation';
+import { groupByDayAdded, STATUS_META, STATUS_TABS } from '@/features/jobs/presentation';
 import { cn } from '@/lib/cn';
 import { Button } from '@/ui/button';
 import { EmptyState } from '@/ui/empty-state';
@@ -20,6 +20,8 @@ interface Filters {
   readonly status?: JobStatus;
   readonly query?: string;
   readonly minScore?: number;
+  /** Absent: grouped by the day each job was added, newest first. */
+  readonly sort?: 'score';
 }
 
 /** Search params are user input: anything unrecognised is ignored rather than rejected. */
@@ -31,6 +33,7 @@ function parseFilters(params: Record<string, string | string[] | undefined>): Fi
     status: status.success ? status.data : undefined,
     query: single('q')?.trim() || undefined,
     minScore: (MIN_SCORES as readonly number[]).includes(minScore) ? minScore : undefined,
+    sort: single('sort') === 'score' ? 'score' : undefined,
   };
 }
 
@@ -39,6 +42,7 @@ function hrefFor(filters: Filters): Route {
   if (filters.status) params.set('status', filters.status);
   if (filters.query) params.set('q', filters.query);
   if (filters.minScore) params.set('min', String(filters.minScore));
+  if (filters.sort) params.set('sort', filters.sort);
   const query = params.toString();
   return query ? `/jobs?${query}` : '/jobs';
 }
@@ -55,6 +59,7 @@ export default async function JobsPage({
     statuses: filters.status ? [filters.status] : undefined,
     query: filters.query,
     minScore: filters.minScore,
+    sort: filters.sort ?? 'newest',
   });
   const activeTotal = STATUS_TABS.filter((status) => status !== 'dismissed').reduce(
     (sum, status) => sum + counts[status],
@@ -82,7 +87,7 @@ export default async function JobsPage({
     <>
       <PageHeader
         title="Jobs"
-        description="Opportunities found and assessed by your agent, best match first."
+        description="Opportunities found and assessed by your agent, grouped by the day they were added."
       />
 
       <div className="mb-5 flex flex-col gap-3">
@@ -142,18 +147,38 @@ export default async function JobsPage({
               </option>
             ))}
           </Select>
+          <Select
+            name="sort"
+            defaultValue={filters.sort ?? ''}
+            aria-label="Order"
+            className="w-auto"
+          >
+            <option value="">Newest first</option>
+            <option value="score">Best match</option>
+          </Select>
           <Button type="submit">Apply</Button>
         </form>
       </div>
 
-      {results.length > 0 ? (
-        <ul className="flex flex-col gap-3">
-          {results.map((job) => (
-            <li key={job.id}>
-              <JobCard job={job} />
-            </li>
+      {results.length > 0 && filters.sort === 'score' ? (
+        <JobList jobs={results} />
+      ) : results.length > 0 ? (
+        <div className="flex flex-col gap-8">
+          {groupByDayAdded(results).map((group) => (
+            <section key={group.key} aria-labelledby={`added-${group.key}`}>
+              <h2
+                id={`added-${group.key}`}
+                className="mb-3 flex items-baseline gap-2 text-sm font-semibold"
+              >
+                {group.label}
+                <span className="text-xs font-normal text-subtle tabular-nums">
+                  {group.jobs.length} added
+                </span>
+              </h2>
+              <JobList jobs={group.jobs} />
+            </section>
           ))}
-        </ul>
+        </div>
       ) : activeTotal + counts.dismissed === 0 ? (
         <EmptyState icon={Sparkles} title="No jobs yet">
           Fill in your profile and preferences, then open Claude Code or Codex in this project and
@@ -168,5 +193,17 @@ export default async function JobsPage({
         <EmptyState icon={Search} title="No jobs match these filters" />
       )}
     </>
+  );
+}
+
+function JobList({ jobs }: { jobs: readonly JobSummary[] }) {
+  return (
+    <ul className="flex flex-col gap-3">
+      {jobs.map((job) => (
+        <li key={job.id}>
+          <JobCard job={job} />
+        </li>
+      ))}
+    </ul>
   );
 }

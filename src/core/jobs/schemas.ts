@@ -83,6 +83,8 @@ export const jobFilterSchema = z.object({
   statuses: z.array(jobStatusSchema).optional(),
   minScore: z.int().min(0).max(100).optional(),
   query: z.string().trim().max(200).optional(),
+  /** `score` (default): best match first. `newest`: most recently added first. */
+  sort: z.enum(['score', 'newest']).optional(),
   limit: z.int().min(1).max(500).optional(),
 });
 export type JobFilter = z.infer<typeof jobFilterSchema>;
