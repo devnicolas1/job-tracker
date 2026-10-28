@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "job-tracker": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["--no-install", "tsx", "src/mcp/server.ts"]
+    }
+  }
+}

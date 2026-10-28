@@ -1,0 +1,17 @@
+{
+  "hits": [
+    {
+      "objectID": "49930001",
+      "parent_id": 49922569,
+      "story_id": 49922569,
+      "created_at": "2026-10-02T10:00:00Z",
+      "comment_text": "Acme Corp | Senior Backend Engineer (PHP) | REMOTE (Americas) | $150k<p>We are looking for an engineer with experience in Laravel and you will work with our team."
+    },
+    {
+      "objectID": "49930002",
+      "parent_id": 49930001,
+      "story_id": 49922569,
+      "comment_text": "Is this open to Europe?"
+    }
+  ]
+}

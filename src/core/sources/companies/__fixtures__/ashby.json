@@ -1,0 +1,23 @@
+{
+  "jobs": [
+    {
+      "id": "34413f8d",
+      "title": " Software Engineer, Backend",
+      "jobUrl": "https://jobs.ashbyhq.com/ramp/34413f8d",
+      "location": "New York, NY (HQ)",
+      "secondaryLocations": [{ "location": "Remote (Canada)" }],
+      "isRemote": true,
+      "workplaceType": "Hybrid",
+      "employmentType": "FullTime",
+      "publishedAt": "2026-04-07T17:12:35.753+00:00",
+      "isListed": true,
+      "descriptionPlain": "About Ramp"
+    },
+    {
+      "id": "hidden",
+      "title": "Unlisted",
+      "jobUrl": "https://jobs.ashbyhq.com/ramp/hidden",
+      "isListed": false
+    }
+  ]
+}

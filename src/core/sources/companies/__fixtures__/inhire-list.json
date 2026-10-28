@@ -1,0 +1,13 @@
+{
+  "tenantName": "Magalu Cloud",
+  "jobsPage": [
+    {
+      "jobId": "c6f11c5b",
+      "displayName": "Desenvolvedor(a) Backend Sênior",
+      "status": "published",
+      "workplaceType": "Remote",
+      "location": "BR"
+    },
+    { "jobId": "closed1", "displayName": "Old", "status": "closed" }
+  ]
+}

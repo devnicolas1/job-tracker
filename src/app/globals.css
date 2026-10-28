@@ -1,0 +1,97 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens. Components use semantic names (surface, muted, accent…) rather than raw palette
+ * colours, so light/dark themes and future re-skins only touch this file.
+ */
+:root {
+  --canvas: oklch(0.985 0.002 260);
+  --surface: oklch(1 0 0);
+  --surface-muted: oklch(0.97 0.003 260);
+  --border: oklch(0.91 0.005 260);
+  --border-strong: oklch(0.84 0.008 260);
+  --text: oklch(0.22 0.015 260);
+  --text-muted: oklch(0.5 0.015 260);
+  --text-subtle: oklch(0.62 0.012 260);
+  --accent: oklch(0.52 0.2 264);
+  --accent-hover: oklch(0.47 0.2 264);
+  --accent-soft: oklch(0.95 0.03 264);
+  --accent-contrast: oklch(0.99 0 0);
+  --success: oklch(0.55 0.14 155);
+  --success-soft: oklch(0.95 0.04 155);
+  --warning: oklch(0.62 0.15 70);
+  --warning-soft: oklch(0.96 0.05 85);
+  --danger: oklch(0.55 0.2 25);
+  --danger-soft: oklch(0.96 0.03 25);
+  --ring: oklch(0.52 0.2 264 / 0.35);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: oklch(0.17 0.008 260);
+    --surface: oklch(0.21 0.01 260);
+    --surface-muted: oklch(0.245 0.01 260);
+    --border: oklch(0.3 0.012 260);
+    --border-strong: oklch(0.38 0.014 260);
+    --text: oklch(0.95 0.005 260);
+    --text-muted: oklch(0.72 0.012 260);
+    --text-subtle: oklch(0.6 0.012 260);
+    --accent: oklch(0.68 0.16 264);
+    --accent-hover: oklch(0.74 0.15 264);
+    --accent-soft: oklch(0.3 0.06 264);
+    --accent-contrast: oklch(0.16 0.02 264);
+    --success: oklch(0.72 0.14 155);
+    --success-soft: oklch(0.3 0.05 155);
+    --warning: oklch(0.8 0.14 80);
+    --warning-soft: oklch(0.32 0.05 80);
+    --danger: oklch(0.7 0.17 25);
+    --danger-soft: oklch(0.32 0.06 25);
+    --ring: oklch(0.68 0.16 264 / 0.45);
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-subtle: var(--text-subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-sm text-text;
+  }
+
+  *:focus-visible {
+    @apply ring-[3px] ring-ring outline-none;
+  }
+
+  ::selection {
+    @apply bg-accent-soft;
+  }
+}

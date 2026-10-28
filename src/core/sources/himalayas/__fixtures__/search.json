@@ -1,0 +1,20 @@
+{
+  "totalCount": 1,
+  "jobs": [
+    {
+      "title": "Senior Laravel Developer",
+      "companyName": "Acme",
+      "employmentType": "Full Time",
+      "minSalary": 60000,
+      "maxSalary": 80000,
+      "currency": "USD",
+      "salaryPeriod": "annual",
+      "seniority": ["Senior"],
+      "locationRestrictions": ["Brazil", "Argentina"],
+      "description": "<p>We are looking for an engineer with experience in Laravel and you will work with our team.</p>",
+      "pubDate": 1792087770,
+      "applicationLink": "https://himalayas.app/companies/acme/jobs/senior-laravel-developer-123",
+      "guid": "https://himalayas.app/companies/acme/jobs/senior-laravel-developer-123"
+    }
+  ]
+}
