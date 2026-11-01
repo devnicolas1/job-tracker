@@ -1,22 +1,27 @@
 ---
 name: tailor-resume
-description: Write (or rewrite) the tailored résumé for one job already in the Job Tracker. Use when the user runs /tailor-resume <job id>, or asks to tailor, generate or redo the résumé for a specific tracked job. Argument — the job id shown in the app, e.g. "Fn_fog-hkJc".
+description: Write (or rewrite) the tailored résumé, cover letter and "why me" pitch for one job already in the Job Tracker. Use when the user runs /tailor-resume <job id>, or asks to tailor, generate or redo the résumé, cover letter or pitch for a specific tracked job. Argument — the job id shown in the app, e.g. "Fn_fog-hkJc".
 ---
 
-# Tailor résumé for one job
+# Tailor résumé, cover letter and pitch for one job
 
 The argument is a Job Tracker job id. Work silently and keep it cheap: one call per step.
 
 1. `get_job` with the id. It returns the posting text, the fit assessment and any existing
-   tailored résumé. If the id is unknown, `list_jobs` with `query` set to the argument and pick
-   the match; ask the user if it is ambiguous.
+   tailored résumé, cover letter and pitch. If the id is unknown, `list_jobs` with `query` set
+   to the argument and pick the match; ask the user if it is ambiguous.
 2. `get_profile` once — the source of facts beyond what the base résumé says.
 3. `get_base_resume` with the posting's language (`lang:` in `get_job`; if missing, the language
    the posting is written in; `pt` or `en`).
 4. Write the edits (below) and save them with `save_tailored_resume` (`id` + `tailoredResume`).
-   If an existing tailored résumé is shown, improve on it rather than starting over, unless the
-   user asked for a fresh one.
-5. Reply with one line: the job, what you emphasised, and the link returned by the tool.
+5. Write the cover letter and pitch (below) and save them with `update_job` (`id` +
+   `coverLetter` + `pitch`). Make them tell the same story as the tailored résumé.
+6. Reply with one line: the job, what you emphasised, and the link returned by the tool.
+
+If the user asked for only one of these (e.g. "redo the cover letter"), do only that, skipping
+`get_base_resume` when the résumé is not involved. An existing résumé, cover letter or pitch may
+hold the user's own edits: improve on it rather than starting over, unless the user asked for a
+fresh one.
 
 ## Writing the edits
 
@@ -58,6 +63,22 @@ sheet and applies your edits; you only write text.
 
 **Truthful only.** Every claim must come from the base résumé or the profile. Never add skills,
 tools, metrics or responsibilities that are not there; keep numbers exactly as given.
+
+## Cover letter and pitch
+
+Write both in the posting's language (`lang:` from `get_job` or `get_job_posting`), from the
+profile only: every claim (employer, years, technology, result) must be in it. Never invent
+metrics, and never leave placeholders like "[Hiring Manager]" — address the letter to the
+company's team when no name is given. Write each once; no drafts.
+
+- `pitch`: the answer to "Why are you the best pick for this role?", 60–120 words, first person.
+  Lead with the two or three strengths that match the posting's must-haves, each backed by a
+  concrete fact from the profile. Do not mention gaps.
+- `coverLetter`: 200–320 words, first person, plain paragraphs (no markdown, no address block):
+  why this role and company (from the posting, not generic praise), the most relevant experience
+  with specifics, how the user would handle the posting's main responsibility, a short close. A
+  real gap may be addressed honestly in one sentence when the posting stresses it. End with the
+  user's full name from the profile basics.
 
 ## If something fails
 

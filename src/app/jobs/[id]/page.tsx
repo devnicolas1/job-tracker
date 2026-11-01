@@ -198,7 +198,7 @@ export default async function JobPage({ params }: Props) {
               description={
                 job.coverLetter || job.pitch
                   ? 'Drafted from your profile for this posting. Review and edit before sending.'
-                  : 'The agent drafts these for strong matches. You can also write your own.'
+                  : 'The agent drafts these when it saves a job, or with the tailoring prompt. You can also write your own.'
               }
             />
             <CardBody>

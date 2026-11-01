@@ -13,7 +13,7 @@ read the file when the user asks for that task:
 
 - Find jobs (`find-jobs`): `.claude/skills/find-jobs/SKILL.md`.
 - Fill the profile from an uploaded résumé (`import-resume`): `.claude/skills/import-resume/SKILL.md`.
-- Tailor the résumé for one tracked job (`tailor-resume <job id>`):
+- Tailor the résumé, cover letter and pitch for one tracked job (`tailor-resume <job id>`):
   `.claude/skills/tailor-resume/SKILL.md`.
 
 Skills must work in every agent: name MCP tools, not agent-specific tools (no "Read tool",

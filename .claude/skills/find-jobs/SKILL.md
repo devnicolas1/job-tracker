@@ -102,24 +102,13 @@ lowest token cost. Work silently; talk to the user only at the end (or if blocke
 
 ## Cover letter and pitch
 
-Write both in the posting's language (`lang:` from `get_job_posting`), from the profile only:
-every claim (employer, years, technology, result) must be in it. Never invent metrics, and never
-leave placeholders like "[Hiring Manager]" — address the letter to the company's team when no name
-is given. Write each once; no drafts.
-
-- `pitch`: the answer to "Why are you the best pick for this role?", 60–120 words, first person.
-  Lead with the two or three strengths that match the posting's must-haves, each backed by a
-  concrete fact from the profile. Do not mention gaps.
-- `coverLetter`: 200–320 words, first person, plain paragraphs (no markdown, no address block):
-  why this role and company (from the posting, not generic praise), the most relevant experience
-  with specifics, how the user would handle the posting's main responsibility, a short close. A
-  real gap may be addressed honestly in one sentence when the posting stresses it. End with the
-  user's full name from the profile basics.
+Follow the **Cover letter and pitch** section of the `tailor-resume` skill
+(`../tailor-resume/SKILL.md` from this skill's folder; read it once per run, before the first
+save). Send both in `save_job`.
 
 ## Tailored résumé
 
-Follow the **Writing the edits** section of the `tailor-resume` skill (`../tailor-resume/SKILL.md`
-from this skill's folder; read it once per run, before the first tailoring; `lang:` comes from
+Follow the **Writing the edits** section of the same `tailor-resume` skill (`lang:` comes from
 `get_job_posting`). Send the result as `tailoredResume` in `save_job`.
 
 ## If something fails
