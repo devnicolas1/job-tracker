@@ -57,7 +57,23 @@ export const jobAssessmentSchema = z.object({
 });
 export type JobAssessment = z.infer<typeof jobAssessmentSchema>;
 
+/** What the user sends with an application, written from the profile for this posting. */
+export const jobApplicationSchema = z.object({
+  coverLetter: longText(8000).optional().describe('Cover letter, in the posting language'),
+  pitch: longText(3000)
+    .optional()
+    .describe('Answer to "Why are you the best pick for this role?", in the posting language'),
+});
+export type JobApplication = z.infer<typeof jobApplicationSchema>;
+
+/** Edits from the app: an empty string clears the text. */
+export const updateJobApplicationSchema = z.object({
+  coverLetter: z.string().trim().max(8000).optional(),
+  pitch: z.string().trim().max(3000).optional(),
+});
+
 export const saveJobSchema = jobPostingSchema.extend({
+  ...jobApplicationSchema.shape,
   assessment: jobAssessmentSchema.optional(),
   tailoredResume: resumeTailoringInputSchema.optional(),
   status: jobStatusSchema.optional().describe('Defaults to "new"; existing statuses are kept'),
@@ -70,12 +86,14 @@ export interface Job extends JobPosting {
   readonly notes: string | null;
   readonly assessment: JobAssessment | null;
   readonly tailoredResume: ResumeTailoring | null;
+  readonly coverLetter: string | null;
+  readonly pitch: string | null;
   readonly createdAt: Date;
   readonly updatedAt: Date;
   readonly statusChangedAt: Date;
 }
 
-export type JobSummary = Omit<Job, 'description' | 'tailoredResume'> & {
+export type JobSummary = Omit<Job, 'description' | 'tailoredResume' | 'coverLetter' | 'pitch'> & {
   readonly hasTailoredResume: boolean;
 };
 

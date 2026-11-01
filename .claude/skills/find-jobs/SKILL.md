@@ -1,6 +1,6 @@
 ---
 name: find-jobs
-description: Hunt for job openings that fit the user's profile, score them, write a tailored résumé for the strong matches and save them to the Job Tracker. Use when the user asks to find, search or look for jobs, or to refresh their job pipeline. Optional argument — how many matches to save and any extra focus, e.g. "5 remote backend roles".
+description: Hunt for job openings that fit the user's profile, score them, write a cover letter and a "why me" pitch for each, a tailored résumé for the strong matches, and save them to the Job Tracker. Use when the user asks to find, search or look for jobs, or to refresh their job pipeline. Optional argument — how many matches to save and any extra focus, e.g. "5 remote backend roles".
 ---
 
 # Find jobs
@@ -79,8 +79,9 @@ lowest token cost. Work silently; talk to the user only at the end (or if blocke
    anything they say is not a deal breaker (e.g. a missing degree) never caps the score.
 
 6. **Save**
-   - **≥ 70** — `save_job` with `assessment` **and** `tailoredResume` (see Tailored résumé).
-   - **55–69** — `save_job` with `assessment` only.
+   - **≥ 70** — `save_job` with `assessment`, `coverLetter`, `pitch` **and** `tailoredResume`
+     (see Cover letter and pitch, and Tailored résumé).
+   - **55–69** — `save_job` with `assessment`, `coverLetter` and `pitch`.
    - **< 55** — add to a final `dismiss_jobs` batch.
    - Stop once the target count of ≥ 70 matches is saved.
 
@@ -98,6 +99,22 @@ lowest token cost. Work silently; talk to the user only at the end (or if blocke
 - `matchSummary`: 2–3 sentences, plain and specific ("Strong Node/Postgres overlap; posting wants
   Kafka, which the profile lacks.").
 - `strengths` / `gaps`: 2–5 short items each, concrete (skills, years, domain), no fluff.
+
+## Cover letter and pitch
+
+Write both in the posting's language (`lang:` from `get_job_posting`), from the profile only:
+every claim (employer, years, technology, result) must be in it. Never invent metrics, and never
+leave placeholders like "[Hiring Manager]" — address the letter to the company's team when no name
+is given. Write each once; no drafts.
+
+- `pitch`: the answer to "Why are you the best pick for this role?", 60–120 words, first person.
+  Lead with the two or three strengths that match the posting's must-haves, each backed by a
+  concrete fact from the profile. Do not mention gaps.
+- `coverLetter`: 200–320 words, first person, plain paragraphs (no markdown, no address block):
+  why this role and company (from the posting, not generic praise), the most relevant experience
+  with specifics, how the user would handle the posting's main responsibility, a short close. A
+  real gap may be addressed honestly in one sentence when the posting stresses it. End with the
+  user's full name from the profile basics.
 
 ## Tailored résumé
 

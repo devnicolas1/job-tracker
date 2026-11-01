@@ -32,6 +32,26 @@ describe('job service', () => {
     expect(jobs.list()[0]?.assessment?.matchScore).toBe(87);
   });
 
+  it('keeps the cover letter and pitch on refresh, and clears them with an empty edit', async () => {
+    const { jobs } = services;
+    const { job } = await jobs.save({
+      ...samplePosting,
+      coverLetter: 'Dear Acme team, …',
+      pitch: 'Six years of TypeScript.',
+    });
+    await jobs.save({ ...samplePosting, title: 'Senior TypeScript Engineer (Remote)' });
+    expect(jobs.get(job.id)).toMatchObject({
+      coverLetter: 'Dear Acme team, …',
+      pitch: 'Six years of TypeScript.',
+    });
+
+    expect(jobs.updateApplication(job.id, { pitch: '  ' })).toMatchObject({
+      coverLetter: 'Dear Acme team, …',
+      pitch: null,
+    });
+    expect(() => jobs.updateApplication('missing', { pitch: 'x' })).toThrow(NotFoundError);
+  });
+
   it('lists by score and hides dismissed postings by default', async () => {
     const { jobs } = services;
     await jobs.save({

@@ -40,6 +40,25 @@ export async function updateJobNotesAction(
   );
 }
 
+export async function updateJobApplicationAction(
+  id: unknown,
+  _: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const field = (name: string) => {
+    const value = formData.get(name);
+    return typeof value === 'string' ? value : '';
+  };
+  return runAction(
+    () =>
+      getServices().jobs.updateApplication(parseInput(idSchema, id), {
+        coverLetter: field('coverLetter'),
+        pitch: field('pitch'),
+      }),
+    { revalidate: pathsFor(String(id)), success: 'Application saved.' },
+  );
+}
+
 export async function deleteJobAction(id: unknown): Promise<ActionState> {
   return runAction(
     () => {

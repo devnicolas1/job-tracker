@@ -4,6 +4,7 @@ import { z } from 'zod';
 import type { AppConfig } from '@/core/config';
 import type { Services } from '@/core/container';
 import {
+  jobApplicationSchema,
   jobAssessmentSchema,
   jobPostingSchema,
   jobSourceSchema,
@@ -158,15 +159,17 @@ export function registerJobTools(server: McpServer, { services, cache, config }:
     title: 'Save job',
     description:
       'Adds (or refreshes) a job in the tracker with your fit assessment and, for strong ' +
-      'matches, a tailored résumé: edits to the base résumé from get_base_resume. For ' +
-      'job-board sources the posting is filled in server-side, so send only ids + your ' +
-      'analysis. For other sources pass `posting` with at least url, title and company.',
+      'matches, a tailored résumé (edits to the base résumé from get_base_resume), cover ' +
+      'letter and pitch. For job-board sources the posting is filled in server-side, so send ' +
+      'only ids + your analysis. For other sources pass `posting` with at least url, title ' +
+      'and company.',
     input: z.object({
       source: jobSourceSchema.default('linkedin'),
       externalId: z.string().min(1),
       posting: toPatchSchema(jobPostingSchema.omit({ source: true, externalId: true })).optional(),
       assessment: jobAssessmentSchema,
       tailoredResume: resumeTailoringInputSchema.optional(),
+      ...jobApplicationSchema.shape,
       status: jobStatusSchema.optional(),
     }),
     run: async ({ source, externalId, posting, ...rest }) => {
@@ -247,7 +250,8 @@ export function registerJobTools(server: McpServer, { services, cache, config }:
     name: 'get_job',
     title: 'Get tracked job',
     description:
-      'A tracked job: assessment, notes, current tailored résumé (as JSON) and the posting text.',
+      'A tracked job: assessment, notes, cover letter, pitch, current tailored résumé (as JSON) ' +
+      'and the posting text.',
     input: z.object({ id: z.string(), maxChars: z.int().min(0).max(20_000).default(4_000) }),
     annotations: { readOnlyHint: true },
     run: ({ id, maxChars }) => {
@@ -275,15 +279,20 @@ export function registerJobTools(server: McpServer, { services, cache, config }:
     name: 'update_job',
     title: 'Update tracked job',
     description:
-      "Changes a tracked job's status or notes. To replace its résumé, call save_job again.",
+      "Changes a tracked job's status, notes, cover letter or pitch. To replace its résumé, " +
+      'use save_tailored_resume.',
     input: z.object({
       id: z.string(),
       status: jobStatusSchema.optional(),
       notes: z.string().max(10_000).optional(),
+      ...jobApplicationSchema.shape,
     }),
-    run: ({ id, status, notes }) => {
+    run: ({ id, status, notes, coverLetter, pitch }) => {
       if (status) jobs.updateStatus(id, status);
       if (notes !== undefined) jobs.updateNotes(id, notes);
+      if (coverLetter !== undefined || pitch !== undefined) {
+        jobs.updateApplication(id, { coverLetter, pitch });
+      }
       return `Updated [${id}]: ${jobLink(id)}`;
     },
   });

@@ -204,6 +204,8 @@ export function formatJob(job: Job, webUrl: string, description?: string): strin
     job.assessment?.strengths.length && `strengths: ${job.assessment.strengths.join('; ')}`,
     job.assessment?.gaps.length && `gaps: ${job.assessment.gaps.join('; ')}`,
     job.notes && `notes: ${job.notes}`,
+    job.pitch && `pitch: ${job.pitch}`,
+    job.coverLetter && `coverLetter:\n${job.coverLetter}`,
     job.tailoredResume && `tailoredResume: ${JSON.stringify(job.tailoredResume)}`,
     description && `\n${description}`,
   ]

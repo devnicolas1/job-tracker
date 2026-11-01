@@ -69,6 +69,8 @@ describe('MCP server', () => {
       externalId: 'acme-42',
       posting: { url: 'https://acme.test/jobs/42', title: 'Platform Engineer', company: 'Acme' },
       assessment: { matchScore: 81, matchSummary: 'Good overlap with platform work.' },
+      coverLetter: 'Dear Acme team, …',
+      pitch: 'I have run platform teams for four years.',
     });
     expect(saved.text).toMatch(
       /^Saved \[[\w-]{11}\] Platform Engineer — Acme: http:\/\/app\.test\/jobs\//,
@@ -76,6 +78,12 @@ describe('MCP server', () => {
 
     const { text } = await call('list_jobs');
     expect(text).toMatch(/\] 81 \| Platform Engineer \| Acme \| new$/);
+
+    const id = /\[([\w-]{11})\]/.exec(saved.text)?.[1] ?? '';
+    await call('update_job', { id, pitch: 'Four years running platform teams.' });
+    const details = await call('get_job', { id });
+    expect(details.text).toContain('pitch: Four years running platform teams.');
+    expect(details.text).toContain('coverLetter:\nDear Acme team, …');
   });
 
   it('tailors a tracked job on demand: get_job shows the posting, save_tailored_resume attaches edits', async () => {

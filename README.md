@@ -3,8 +3,8 @@
 A personal career database, résumé vault and AI-curated job pipeline that runs on your own
 machine. You keep a complete profile; an AI coding agent (Claude Code or Codex, on your existing
 subscription — no API key needed) searches LinkedIn and eight other job boards, scores every
-posting against your profile, tailors **your own résumé** to each strong match and files it all
-here.
+posting against your profile, drafts a cover letter and a "why me" pitch for each match, tailors
+**your own résumé** to the strong ones and files it all here.
 
 - **Profile** — everything about your career: basics, job preferences, experience, education,
   certifications, projects, skills, languages, awards, publications, volunteering.
@@ -40,7 +40,8 @@ Then set up your agent once (see **Agent setup** below) and start it **in this f
    ("import my résumé into my profile"). Set your **Job preferences**: they drive the search.
 2. Ask it to find jobs, optionally with a target and focus: "find 5 remote backend jobs in
    Portugal" (in Claude Code, also `/find-jobs 5 remote backend roles in Portugal`).
-3. Review the results on **Jobs**, download tailored résumés, and track your applications.
+3. Review the results on **Jobs**: edit the drafted cover letter and pitch, download tailored
+   résumés, and track your applications.
    Jobs saved without a résumé (or with an outdated one) have a **Copy tailoring prompt** button:
    paste the copied prompt into your agent to generate that résumé.
 

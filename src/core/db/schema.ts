@@ -80,6 +80,8 @@ export const jobs = sqliteTable(
     matchScore: integer(),
     assessment: text({ mode: 'json' }).$type<JobAssessment>(),
     tailoredResume: text({ mode: 'json' }).$type<ResumeTailoring>(),
+    coverLetter: text(),
+    pitch: text(),
     ...timestamps,
   },
   (table) => [

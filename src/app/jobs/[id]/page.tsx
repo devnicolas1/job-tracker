@@ -15,6 +15,7 @@ import { notFound } from 'next/navigation';
 import { getServices } from '@/core/container';
 import type { Job } from '@/core/jobs/schemas';
 import { NotFoundError } from '@/core/shared/errors';
+import { ApplicationForm } from '@/features/jobs/components/application-form';
 import { CopyPromptButton } from '@/features/jobs/components/copy-prompt-button';
 import { DeleteJobButton } from '@/features/jobs/components/delete-job-button';
 import { NotesForm } from '@/features/jobs/components/notes-form';
@@ -188,6 +189,20 @@ export default async function JobPage({ params }: Props) {
                   and paste it into Claude Code or Codex, in this project.
                 </EmptyState>
               )}
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader
+              title="Application"
+              description={
+                job.coverLetter || job.pitch
+                  ? 'Drafted from your profile for this posting. Review and edit before sending.'
+                  : 'The agent drafts these for strong matches. You can also write your own.'
+              }
+            />
+            <CardBody>
+              <ApplicationForm jobId={job.id} coverLetter={job.coverLetter} pitch={job.pitch} />
             </CardBody>
           </Card>
 

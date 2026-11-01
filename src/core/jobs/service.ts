@@ -13,6 +13,7 @@ import {
   jobFilterSchema,
   jobStatusSchema,
   saveJobSchema,
+  updateJobApplicationSchema,
   type Job,
   type JobFilter,
   type JobPosting,
@@ -40,6 +41,8 @@ function toJob(row: JobRow): Job {
     notes: row.notes,
     assessment: row.assessment,
     tailoredResume: row.tailoredResume,
+    coverLetter: row.coverLetter,
+    pitch: row.pitch,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
     statusChangedAt: row.statusChangedAt,
@@ -225,6 +228,22 @@ export function createJobService(
       findRow(id);
       const tailoredResume = await deps.tailoring.prepare(input);
       const row = db.update(jobs).set({ tailoredResume }).where(eq(jobs.id, id)).returning().get();
+      return toJob(row);
+    },
+
+    /** Replaces the cover letter and/or pitch that are passed; an empty string clears one. */
+    updateApplication(id: string, input: unknown): Job {
+      const { coverLetter, pitch } = parseInput(updateJobApplicationSchema, input);
+      findRow(id);
+      const row = db
+        .update(jobs)
+        .set({
+          ...(coverLetter !== undefined && { coverLetter: coverLetter || null }),
+          ...(pitch !== undefined && { pitch: pitch || null }),
+        })
+        .where(eq(jobs.id, id))
+        .returning()
+        .get();
       return toJob(row);
     },
 
