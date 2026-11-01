@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { parseHimalayas } from './himalayas/source';
 import { parseLaraJobsFeed } from './larajobs/source';
+import { parseRemotar } from './remotar/source';
 import { parseRemoteOk } from './remoteok/source';
 import { parseRemotive } from './remotive/source';
 import { readFixture } from './testing';
@@ -92,5 +93,39 @@ describe('We Work Remotely feed', () => {
       employmentType: 'full-time',
       postedAt: '2026-10-20',
     });
+  });
+});
+
+describe('Remotar API', () => {
+  it('maps tags, cents salaries and requirements, and skips expired jobs', () => {
+    const jobs = parseRemotar(JSON.parse(readFixture(dir('remotar'), 'jobs.json')));
+    expect(jobs).toHaveLength(2);
+    expect(jobs[0]).toMatchObject({
+      externalId: '169337',
+      url: 'https://remotar.com.br/job/169337',
+      company: 'NetBox Labs',
+      location: 'Brazil',
+      salary: 'USD · 7083–8167 · monthly',
+      seniority: 'Sênior',
+      workplaceType: 'remote',
+      postedAt: '2026-10-30',
+      language: 'en',
+    });
+    expect(jobs[0]?.description).toContain('Tags: Vaga internacional, 100% Remoto, Sênior');
+    expect(jobs[1]).toMatchObject({
+      company: 'Môre',
+      location: 'São Paulo, SP, Brazil',
+      salary: 'BRL · 8100 · monthly',
+      workplaceType: 'hybrid',
+      employmentType: 'full-time',
+      postedAt: '2026-10-31',
+      language: 'pt',
+    });
+    expect(jobs[1]?.description).toContain('Requisitos:\n- Experiência com Figma.');
+    expect(jobs[1]?.description).toContain('Diferenciais:\n- Vivência no setor financeiro.');
+  });
+
+  it('reports a changed format instead of returning garbage', () => {
+    expect(() => parseRemotar({ jobs: [] })).toThrow('changed its API format');
   });
 });

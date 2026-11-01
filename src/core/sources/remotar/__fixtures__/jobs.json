@@ -1,0 +1,138 @@
+{
+  "meta": {
+    "total": 3,
+    "per_page": 50,
+    "current_page": 1
+  },
+  "data": [
+    {
+      "id": 169337,
+      "title": "Senior Frontend Engineer, Observability",
+      "subtitle": "Build real-time monitoring and telemetry dashboards with React for NetBox Labs' Observability products. Remote, LATAM.",
+      "description": "<p>NetBox Labs is hiring a Senior Frontend Engineer to build the real-time monitoring and telemetry dashboards at the heart of our Observability products. This is a frontend-focused role for someone who loves React, thinks in data visualization, and works AI-first.</p>",
+      "city": "",
+      "state": "",
+      "country": null,
+      "type": "remote",
+      "externalLink": "https://jobs.ashbyhq.com/netboxlabs/0db9523a-da9a-43df-b62b-d02470910c06/application?utm_source=remotar",
+      "expired": false,
+      "createdAt": "2026-10-30T18:17:14.277-03:00",
+      "jobSalary": {
+        "from": 708300,
+        "to": 816700,
+        "currency": "USD",
+        "type": "monthly"
+      },
+      "jobTags": [
+        {
+          "tag": {
+            "name": "✈️ Vaga internacional"
+          }
+        },
+        {
+          "tag": {
+            "name": "🌍 100% Remoto"
+          }
+        },
+        {
+          "tag": {
+            "name": "🧓🏽 Sênior"
+          }
+        }
+      ],
+      "jobRequirements": [],
+      "company": {
+        "name": "NetBox Labs"
+      }
+    },
+    {
+      "id": 169442,
+      "title": "Product Designer - Sênior | Bradesco (Remoto)",
+      "subtitle": "Projeto remoto para Product Designer Sênior conduzir soluções de UX de ponta a ponta, com contratação CLT e benefícios da Môre.",
+      "description": "<h3>Descrição da Vaga</h3>\n<p>Buscamos uma Pessoa Product Designer Sênior para atuar na condução de soluções de UX de ponta a ponta, com autonomia para compreender o contexto, estruturar problemas e definir direcionamentos. Será responsável por criar wireframes, protótipos navegáveis e UI final, garantindo consistência e qualidade nas entregas.</p>",
+      "city": "São Paulo",
+      "state": "SP",
+      "country": null,
+      "type": "hybrid",
+      "externalLink": "https://vemsermore.jobs.recrut.ai/job/9WP31V?utm_source=remotar",
+      "expired": false,
+      "createdAt": "2026-10-31T20:42:35.852-03:00",
+      "jobSalary": {
+        "from": 810000,
+        "to": 810000,
+        "currency": "BRL",
+        "type": "monthly"
+      },
+      "jobTags": [
+        {
+          "tag": {
+            "name": "💼 CLT"
+          }
+        },
+        {
+          "tag": {
+            "name": "🧓🏽 Sênior"
+          }
+        },
+        {
+          "tag": {
+            "name": "🌍 100% Remoto"
+          }
+        }
+      ],
+      "jobRequirements": [
+        {
+          "description": "Experiência com Figma.",
+          "mandatory": true
+        },
+        {
+          "description": "Vivência no setor financeiro.",
+          "mandatory": false
+        }
+      ],
+      "company": {
+        "name": "Môre "
+      }
+    },
+    {
+      "id": 1,
+      "title": "Expired role",
+      "subtitle": "Projeto remoto para Product Designer Sênior conduzir soluções de UX de ponta a ponta, com contratação CLT e benefícios da Môre.",
+      "description": "<h3>Descrição da Vaga</h3>\n<p>Buscamos uma Pessoa Product Designer Sênior para atuar na condução de soluções de UX de ponta a ponta, com autonomia para compreender o contexto, estruturar problemas e definir direcionamentos. Será responsável por criar wireframes, protótipos navegáveis e UI final, garantindo consistência e qualidade nas entregas.</p>",
+      "city": null,
+      "state": null,
+      "country": null,
+      "type": "remote",
+      "externalLink": "https://vemsermore.jobs.recrut.ai/job/9WP31V?utm_source=remotar",
+      "expired": true,
+      "createdAt": "2026-10-31T20:42:35.852-03:00",
+      "jobSalary": {
+        "from": 0,
+        "to": 0,
+        "currency": "BRL",
+        "type": "toMatch"
+      },
+      "jobTags": [
+        {
+          "tag": {
+            "name": "💼 CLT"
+          }
+        },
+        {
+          "tag": {
+            "name": "🧓🏽 Sênior"
+          }
+        },
+        {
+          "tag": {
+            "name": "🌍 100% Remoto"
+          }
+        }
+      ],
+      "jobRequirements": [],
+      "company": {
+        "name": "Môre "
+      }
+    }
+  ]
+}

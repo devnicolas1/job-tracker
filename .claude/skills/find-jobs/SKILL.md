@@ -57,6 +57,7 @@ lowest token cost. Work silently; talk to the user only at the end (or if blocke
    | `companies`                                           | Companies the user chose (Greenhouse, Lever, Ashby, InHire boards). |
    | `hackernews`                                          | Monthly "Who is hiring?" posts: free text, often several roles.     |
    | `github`                                              | Brazilian community boards (backend-br, frontendbr), in Portuguese. |
+   | `remotar`                                             | Brazilian remote/hybrid board; location is always Brazil.           |
 
 4. **Triage from titles** — discard: wrong seniority or function, stacks the profile lacks,
    `exclude` keywords, and duplicates (same company and title, different city: keep one). Then

@@ -165,6 +165,7 @@ PDFs (no text layer) are rejected at upload.
 | `companies`      | Greenhouse, Lever, Ashby and InHire public job-board APIs | Boards listed in Job preferences                |
 | `hackernews`     | Algolia HN API, latest "Who is hiring?" thread            | Free-text posts                                 |
 | `github`         | GitHub API: `backend-br/vagas`, `frontendbr/vagas`        | Brazilian, labelled issues                      |
+| `remotar`        | Public search API (remotar.com.br)                        | Brazilian remote/hybrid jobs, in Portuguese     |
 
 Feed-style sources download once, are cached, and filter locally; postings that name the
 keywords in their title rank first. To watch specific companies, add their boards in **Profile →

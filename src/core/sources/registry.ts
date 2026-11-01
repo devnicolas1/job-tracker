@@ -6,6 +6,7 @@ import { createHackerNewsSource } from './hackernews/source';
 import { createHimalayasSource } from './himalayas/source';
 import { createLaraJobsSource } from './larajobs/source';
 import { createLinkedInSource } from './linkedin/source';
+import { createRemotarSource } from './remotar/source';
 import { createRemoteOkSource } from './remoteok/source';
 import { createRemotiveSource } from './remotive/source';
 import type { JobSource } from './types';
@@ -19,6 +20,7 @@ const factories = {
   himalayas: createHimalayasSource,
   remoteok: createRemoteOkSource,
   weworkremotely: createWeWorkRemotelySource,
+  remotar: createRemotarSource,
   companies: createCompaniesSource,
   hackernews: createHackerNewsSource,
   github: createGitHubSource,
